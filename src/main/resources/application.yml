@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: desafio
+server:
+  port: 8080
