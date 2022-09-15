@@ -17,7 +17,6 @@ import com.serasa.desafio.service.PessoaService;
 @RequestMapping("/pessoa")
 public class PessoaController {
 
-
     private final PessoaService pessoaService;
 
     public PessoaController(final PessoaService pessoaService) {

@@ -28,6 +28,10 @@ public class PessoaService {
     public ResponseEntity<List<PessoaDTO>> findAll() {
         final List<Pessoa> pessoaList = pessoaRepository.findAll();
 
+        if (pessoaList.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+
         final List<PessoaDTO> pessoaDTOList = pessoaList.stream()
                 .map(it -> modelMapper.map(it, PessoaDTO.class))
                 .collect(Collectors.toList());
