@@ -14,6 +14,22 @@ public class PessoaDTO {
     private String regiao;
     private int score;
 
+    public PessoaDTO() {
+    }
+
+    public PessoaDTO(final Long id, final Date dataInclusao, final String nome, final String telefone, final int idade, final String cidade, final String estado,
+                     final String regiao, final int score) {
+        this.id = id;
+        this.dataInclusao = dataInclusao;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.idade = idade;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.regiao = regiao;
+        this.score = score;
+    }
+
     public Long getId() {
         return id;
     }

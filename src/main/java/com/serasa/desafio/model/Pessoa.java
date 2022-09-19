@@ -8,22 +8,48 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "pessoa")
 public class Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
     @Column(name = "data_inclusao", updatable = false)
     private Date dataInclusao;
+    @Column(name = "nome", nullable = false)
     private String nome;
+    @Column(name = "telefone", length = 32)
     private String telefone;
+    @Column(name = "idade", nullable = false)
     private int idade;
+    @Column(name = "cidade")
     private String cidade;
+    @Column(name = "estado", length = 19)
     private String estado;
+    @Column(name = "regiao", length = 12, nullable = false)
     private String regiao;
+    @Column(name = "score", nullable = false)
     private int score;
+
+    public Pessoa() {
+    }
+
+    public Pessoa(final Long id, final Date dataInclusao, final String nome, final String telefone, final int idade, final String cidade, final String estado,
+                  final String regiao, final int score) {
+        this.id = id;
+        this.dataInclusao = dataInclusao;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.idade = idade;
+        this.cidade = cidade;
+        this.estado = estado;
+        this.regiao = regiao;
+        this.score = score;
+    }
 
     @PrePersist
     private void prePersistFunction() {

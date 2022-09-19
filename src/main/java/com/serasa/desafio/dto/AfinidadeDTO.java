@@ -7,6 +7,14 @@ public class AfinidadeDTO {
     private String regiao;
     private List<String> estados;
 
+    public AfinidadeDTO() {
+    }
+
+    public AfinidadeDTO(final String regiao, final List<String> estados) {
+        this.regiao = regiao;
+        this.estados = estados;
+    }
+
     public String getRegiao() {
         return regiao;
     }
