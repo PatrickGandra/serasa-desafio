@@ -1,7 +1,5 @@
 package com.serasa.desafio.service;
 
-import java.util.Optional;
-
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,9 +21,9 @@ public class ScoreService {
 
     private final Logger log = LoggerFactory.getLogger(ScoreService.class);
 
-    public ScoreService(final ScoreRepository scoreRepository) {
+    public ScoreService(final ScoreRepository scoreRepository, final ModelMapper modelMapper) {
         this.scoreRepository = scoreRepository;
-        this.modelMapper = new ModelMapper();
+        this.modelMapper = modelMapper;
     }
 
     @Transactional
@@ -35,12 +33,12 @@ public class ScoreService {
             saved = scoreRepository.save(modelMapper.map(scoreDTO, Score.class));
         } catch (final Exception exception) {
             log.error("Ocorreu um erro ao salvar o Score:: {}", exception.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.internalServerError().build();
         }
-        return new ResponseEntity<>(modelMapper.map(saved, ScoreDTO.class), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(saved, ScoreDTO.class));
     }
 
     public String getDescricao(final int score) {
-        return Optional.ofNullable(scoreRepository.getDescricao(score)).orElse("");
+        return scoreRepository.getDescricao(score).orElse("");
     }
 }

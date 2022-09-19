@@ -1,5 +1,6 @@
 package com.serasa.desafio.model;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -19,7 +20,7 @@ public class Pessoa {
     @Column(name = "id")
     private Long id;
     @Column(name = "data_inclusao", updatable = false)
-    private Date dataInclusao;
+    private LocalDate dataInclusao;
     @Column(name = "nome", nullable = false)
     private String nome;
     @Column(name = "telefone", length = 32)
@@ -38,7 +39,7 @@ public class Pessoa {
     public Pessoa() {
     }
 
-    public Pessoa(final Long id, final Date dataInclusao, final String nome, final String telefone, final int idade, final String cidade, final String estado,
+    public Pessoa(final Long id, final LocalDate dataInclusao, final String nome, final String telefone, final int idade, final String cidade, final String estado,
                   final String regiao, final int score) {
         this.id = id;
         this.dataInclusao = dataInclusao;
@@ -53,7 +54,7 @@ public class Pessoa {
 
     @PrePersist
     private void prePersistFunction() {
-        dataInclusao = new Date();
+        dataInclusao = LocalDate.now();
     }
 
     public Long getId() {
@@ -64,11 +65,11 @@ public class Pessoa {
         this.id = id;
     }
 
-    public Date getDataInclusao() {
+    public LocalDate getDataInclusao() {
         return dataInclusao;
     }
 
-    public void setDataInclusao(final Date dataInclusao) {
+    public void setDataInclusao(final LocalDate dataInclusao) {
         this.dataInclusao = dataInclusao;
     }
 

@@ -35,7 +35,7 @@ class AfinidadeRepositoryTest {
     @DisplayName("Busca por regiao um objeto Afinidade")
     void findByRegiao_RetornaAfinidade_QuandoSucesso() {
         afinidadeRepository.save(AfinidadeCreator.createAfinidade());
-        final Afinidade afinidadeEncontrada = afinidadeRepository.findByRegiao(SUDESTE);
+        final Afinidade afinidadeEncontrada = afinidadeRepository.findByRegiao(SUDESTE).orElse(null);
 
         Assertions.assertThat(afinidadeEncontrada).isNotNull();
 
@@ -49,7 +49,7 @@ class AfinidadeRepositoryTest {
     @Test
     @DisplayName("Busca por regiao um objeto Afinidade e retorna null quando nao encontrado")
     void findByRegiao_RetornaNull_QuandoNaoEncontrado() {
-        final Afinidade afinidadeEncontrada = afinidadeRepository.findByRegiao(null);
+        final Afinidade afinidadeEncontrada = afinidadeRepository.findByRegiao(null).orElse(null);
 
         Assertions.assertThat(afinidadeEncontrada).isNull();
     }

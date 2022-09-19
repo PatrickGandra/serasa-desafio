@@ -2,7 +2,6 @@ package com.serasa.desafio.service;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -25,13 +24,13 @@ public class AfinidadeService {
 
     private final Logger log = LoggerFactory.getLogger(AfinidadeService.class);
 
-    public AfinidadeService(final AfinidadeRepository afinidadeRepository) {
+    public AfinidadeService(final AfinidadeRepository afinidadeRepository, final ModelMapper modelMapper) {
         this.afinidadeRepository = afinidadeRepository;
-        this.modelMapper = new ModelMapper();
+        this.modelMapper = modelMapper;
     }
 
     public List<String> findByRegiao(final String regiao) {
-        return Optional.ofNullable(afinidadeRepository.findByRegiao(regiao))
+        return afinidadeRepository.findByRegiao(regiao)
                 .map(Afinidade::getEstados)
                 .orElse(new LinkedList<>());
     }
@@ -44,9 +43,9 @@ public class AfinidadeService {
             saved = afinidadeRepository.save(modelMapper.map(afinidadeDTO, Afinidade.class));
         } catch (final Exception exception) {
             log.error("Ocorreu um erro ao salva a Afinidade:: {}", exception.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.internalServerError().build();
         }
 
-        return new ResponseEntity<>(modelMapper.map(saved, AfinidadeDTO.class), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(saved, AfinidadeDTO.class));
     }
 }

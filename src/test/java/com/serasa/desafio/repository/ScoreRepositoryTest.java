@@ -34,7 +34,7 @@ class ScoreRepositoryTest {
     void getDescricao_RetornaDescricao_QuandoSuceso() {
         scoreRepository.save(ScoreCreator.createScore());
 
-        final String scoreDescricao = scoreRepository.getDescricao(200);
+        final String scoreDescricao = scoreRepository.getDescricao(200).orElse("");
 
         Assertions.assertThat(scoreDescricao)
                 .isNotNull()

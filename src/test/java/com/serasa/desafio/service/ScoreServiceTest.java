@@ -4,6 +4,8 @@ package com.serasa.desafio.service;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -11,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -28,6 +31,9 @@ class ScoreServiceTest {
 
     @Mock
     ScoreRepository scoreRepositoryMock;
+
+    @Mock
+    ModelMapper modelMapper;
 
     @Test
     @DisplayName("Retorna um objeto ScoreDTO quando sucesso")
@@ -58,7 +64,7 @@ class ScoreServiceTest {
     @Test
     @DisplayName("Retorna a Descricao do objeto Score quando sucesso")
     void getDescricao_RetornaDescricaoScore_QuandoSucesso() {
-        when(scoreRepositoryMock.getDescricao(1000)).thenReturn("Recomendável");
+        when(scoreRepositoryMock.getDescricao(1000)).thenReturn(Optional.of("Recomendável"));
         final String descricao = scoreServiceMock.getDescricao(1000);
 
         Assertions.assertThat(descricao)

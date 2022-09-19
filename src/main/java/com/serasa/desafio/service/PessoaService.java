@@ -29,11 +29,12 @@ public class PessoaService {
 
     private final Logger log = LoggerFactory.getLogger(PessoaService.class);
 
-    public PessoaService(final PessoaRepository pessoaRepository, final AfinidadeService afinidadeService, final ScoreService scoreService) {
+    public PessoaService(final PessoaRepository pessoaRepository, final AfinidadeService afinidadeService,
+                         final ScoreService scoreService, final ModelMapper modelMapper) {
         this.pessoaRepository = pessoaRepository;
         this.afinidadeService = afinidadeService;
         this.scoreService = scoreService;
-        this.modelMapper = new ModelMapper();
+        this.modelMapper = modelMapper;
     }
 
     @Transactional
@@ -45,9 +46,9 @@ public class PessoaService {
 
         } catch (final Exception exception) {
             log.error("Ocorreu um erro ao salva a Pessoa:: {}", exception.getMessage());
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity.internalServerError().build();
         }
-        return new ResponseEntity<>(modelMapper.map(saved, PessoaDTO.class), HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(modelMapper.map(saved, PessoaDTO.class));
     }
 
     public ResponseEntity<List<PessoaConsultaDTO>> findAll() {
@@ -61,7 +62,7 @@ public class PessoaService {
                 .map(this::mapPessoaConsulta)
                 .collect(Collectors.toList());
 
-        return new ResponseEntity<>(pessoaConsultaDTOList, HttpStatus.OK);
+        return ResponseEntity.ok(pessoaConsultaDTOList);
     }
 
     public ResponseEntity<PessoaConsultaDTO> findById(final Long id) {

@@ -17,3 +17,6 @@ spring:
     defer-datasource-initialization: true
 server:
   port: 8080
+
+jwt:
+  secret: secretkey123

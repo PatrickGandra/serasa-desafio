@@ -69,7 +69,7 @@ class AfinidadeServiceTest {
     @Test
     @DisplayName("Retorna uma lista de estados para uma regiao do pais quando sucesso")
     void findByRegiao_RetornaListaEstado_QuandoSucesso() {
-        when(afinidadeRepositoryMock.findByRegiao("sudeste")).thenReturn(AfinidadeCreator.createAfinidade());
+        when(afinidadeRepositoryMock.findByRegiao("sudeste").orElse(null)).thenReturn(AfinidadeCreator.createAfinidade());
         final List<String> regiao = afinidadeServiceMock.findByRegiao("sudeste");
 
         Assertions.assertThat(regiao)
@@ -81,7 +81,7 @@ class AfinidadeServiceTest {
     @Test
     @DisplayName("Retorna uma lista de estados para uma regiao sul do pais quando sucesso")
     void findByRegiao_RetornaListaEstadoSul_QuandoSucesso() {
-    when(afinidadeRepositoryMock.findByRegiao("sul")).thenReturn(new Afinidade("sul", "PR,SC,RS"));
+    when(afinidadeRepositoryMock.findByRegiao("sul").orElse(null)).thenReturn(new Afinidade("sul", "PR,SC,RS"));
         final List<String> regiao = afinidadeServiceMock.findByRegiao("sul");
 
         Assertions.assertThat(regiao)

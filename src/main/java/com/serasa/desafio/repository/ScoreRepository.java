@@ -1,5 +1,7 @@
 package com.serasa.desafio.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,5 +13,5 @@ import com.serasa.desafio.model.Score;
 public interface ScoreRepository extends JpaRepository<Score, String> {
 
     @Query(value = "SELECT s.descricao FROM score AS s WHERE :score >= s.inicial AND :score <= s.fim", nativeQuery = true)
-    String getDescricao(@Param("score") final int score);
+    Optional<String> getDescricao(@Param("score") final int score);
 }

@@ -1,52 +1,48 @@
 package com.serasa.desafio.controller;
 
-import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.util.Date;
-
-import javax.crypto.SecretKey;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.serasa.desafio.dto.UsuarioDTO;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+import com.serasa.desafio.model.JwtRequest;
+import com.serasa.desafio.model.JwtResponse;
+import com.serasa.desafio.service.UserService;
+import com.serasa.desafio.utility.JWTUtility;
 
 @RestController
-@RequestMapping("/login")
 public class LoginController {
 
-    private final SecretKey
-            KEY =
-            Keys.hmacShaKeyFor("7f-j&CKk=coNzZc0y7_4obMP?#TfcYq%fcD0mDpenW2nc!lfGoZ|d?f&RNbDHUX6".getBytes(StandardCharsets.UTF_8));
+    private final JWTUtility jwtUtility;
 
-    @PostMapping
-    public ResponseEntity<String> generateToken(@RequestBody final UsuarioDTO usuario) {
+    private final AuthenticationManager authenticationManager;
+
+    private final UserService userService;
+
+    public LoginController(final JWTUtility jwtUtility,
+                           final AuthenticationManager authenticationManager, final UserService userService) {
+        this.jwtUtility = jwtUtility;
+        this.authenticationManager = authenticationManager;
+        this.userService = userService;
+    }
+
+    @PostMapping("/authenticate")
+    public JwtResponse authenticate(@RequestBody final JwtRequest jwtRequest) throws Exception {
         try {
-            if ("desafio@serasa.com.br".equals(usuario.getNome()) && "1234".equals(usuario.getSenha())) {
-                final Date data = new Date();
-                final Date dataExpiracao = new Date(System.currentTimeMillis() + 1000 * 30); // 30 seconds
-                final String jwtToken = Jwts.builder()
-                        .setSubject(usuario.getNome())
-                        .setIssuer("localhost:8080")
-                        .setIssuedAt(data)
-                        .setExpiration(dataExpiracao)
-                        .signWith(KEY, SignatureAlgorithm.HS256)
-                        .compact();
-
-                return new ResponseEntity<>(jwtToken, HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>("Usuário e/ou senha inválidos", HttpStatus.UNAUTHORIZED);
-            }
-        } catch (final Exception exception) {
-            return new ResponseEntity<>(exception.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(jwtRequest.getUsername(), jwtRequest.getPassword())
+            );
+        } catch (final BadCredentialsException exception) {
+            throw new Exception("Credenciais Inválidas {}", exception);
         }
+
+        final UserDetails userDetails = userService.loadUserByUsername(jwtRequest.getUsername());
+
+        final String token = jwtUtility.generateToken(userDetails);
+
+        return new JwtResponse(token);
     }
 }

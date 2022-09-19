@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.serasa.desafio.dto.PessoaConsultaDTO;
 import com.serasa.desafio.dto.PessoaDTO;
-import com.serasa.desafio.filters.Authorize;
 import com.serasa.desafio.service.PessoaService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -30,7 +29,6 @@ public class PessoaController {
         this.pessoaService = pessoaService;
     }
 
-    @Authorize
     @ApiOperation(value = "Cria um Objeto pessoa")
     @ApiResponses(value = {
             @ApiResponse(code = 201, message = "objeto criado com sucesso"),
@@ -41,7 +39,6 @@ public class PessoaController {
         return pessoaService.create(pessoaDTO);
     }
 
-    @Authorize
     @ApiOperation(value = "Retorna uma lista de pessoas")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "requisição executada com sucesso"),
@@ -52,7 +49,6 @@ public class PessoaController {
         return pessoaService.findAll();
     }
 
-    @Authorize
     @ApiOperation(value = "Retorna um objeto pessoa")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "requisição executada com sucesso"),

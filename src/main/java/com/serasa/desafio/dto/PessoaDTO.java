@@ -1,11 +1,11 @@
 package com.serasa.desafio.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class PessoaDTO {
 
     private Long id;
-    private Date dataInclusao;
+    private LocalDate dataInclusao;
     private String nome;
     private String telefone;
     private int idade;
@@ -17,7 +17,7 @@ public class PessoaDTO {
     public PessoaDTO() {
     }
 
-    public PessoaDTO(final Long id, final Date dataInclusao, final String nome, final String telefone, final int idade, final String cidade, final String estado,
+    public PessoaDTO(final Long id, final LocalDate dataInclusao, final String nome, final String telefone, final int idade, final String cidade, final String estado,
                      final String regiao, final int score) {
         this.id = id;
         this.dataInclusao = dataInclusao;
@@ -38,11 +38,11 @@ public class PessoaDTO {
         this.id = id;
     }
 
-    public Date getDataInclusao() {
+    public LocalDate getDataInclusao() {
         return dataInclusao;
     }
 
-    public void setDataInclusao(final Date dataInclusao) {
+    public void setDataInclusao(final LocalDate dataInclusao) {
         this.dataInclusao = dataInclusao;
     }
 

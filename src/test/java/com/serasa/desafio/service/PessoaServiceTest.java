@@ -11,8 +11,11 @@ import java.util.Optional;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +27,7 @@ import com.serasa.desafio.repository.PessoaRepository;
 import com.serasa.desafio.util.AfinidadeCreator;
 import com.serasa.desafio.util.PessoaCreator;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 @DisplayName("teste para pessoa service")
 class PessoaServiceTest {
 
@@ -40,6 +43,9 @@ class PessoaServiceTest {
 
     @Mock
     ScoreService scoreServiceMock;
+
+    @Mock
+    ModelMapper modelMapper;
 
     private final List<String> estadosSudeste = AfinidadeCreator.getEstadosSudeste();
 
@@ -84,6 +90,7 @@ class PessoaServiceTest {
         when(scoreServiceMock.getDescricao(pessoa.getScore())).thenReturn(RECOMENDAVEL);
         when(afinidadeServiceMock.findByRegiao(pessoa.getRegiao())).thenReturn(estadosSudeste);
         when(pessoaRepositoryMock.findById(pessoa.getId())).thenReturn(Optional.of(pessoa));
+        when(modelMapper.map(pessoa, PessoaConsultaDTO.class)).thenReturn(PessoaCreator.createPessoaConsultaDTO());
 
         final ResponseEntity<PessoaConsultaDTO> pessoaConsultaDTOResponseEntity = pessoaServiceMock.findById(1L);
         final PessoaConsultaDTO pessoaConsultaDTO = pessoaConsultaDTOResponseEntity.getBody();
