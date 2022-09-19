@@ -24,9 +24,9 @@ public class AfinidadeService {
 
     private final Logger log = LoggerFactory.getLogger(AfinidadeService.class);
 
-    public AfinidadeService(final AfinidadeRepository afinidadeRepository, final ModelMapper modelMapper) {
+    public AfinidadeService(final AfinidadeRepository afinidadeRepository) {
         this.afinidadeRepository = afinidadeRepository;
-        this.modelMapper = modelMapper;
+        this.modelMapper = new ModelMapper();
     }
 
     public List<String> findByRegiao(final String regiao) {

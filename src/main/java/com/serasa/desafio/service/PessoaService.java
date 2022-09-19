@@ -30,11 +30,11 @@ public class PessoaService {
     private final Logger log = LoggerFactory.getLogger(PessoaService.class);
 
     public PessoaService(final PessoaRepository pessoaRepository, final AfinidadeService afinidadeService,
-                         final ScoreService scoreService, final ModelMapper modelMapper) {
+                         final ScoreService scoreService) {
         this.pessoaRepository = pessoaRepository;
         this.afinidadeService = afinidadeService;
         this.scoreService = scoreService;
-        this.modelMapper = modelMapper;
+        this.modelMapper = new ModelMapper();
     }
 
     @Transactional

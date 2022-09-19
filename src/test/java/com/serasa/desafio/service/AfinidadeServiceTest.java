@@ -4,6 +4,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -69,7 +70,7 @@ class AfinidadeServiceTest {
     @Test
     @DisplayName("Retorna uma lista de estados para uma regiao do pais quando sucesso")
     void findByRegiao_RetornaListaEstado_QuandoSucesso() {
-        when(afinidadeRepositoryMock.findByRegiao("sudeste").orElse(null)).thenReturn(AfinidadeCreator.createAfinidade());
+        when(afinidadeRepositoryMock.findByRegiao("sudeste")).thenReturn(Optional.of(AfinidadeCreator.createAfinidade()));
         final List<String> regiao = afinidadeServiceMock.findByRegiao("sudeste");
 
         Assertions.assertThat(regiao)
@@ -81,7 +82,8 @@ class AfinidadeServiceTest {
     @Test
     @DisplayName("Retorna uma lista de estados para uma regiao sul do pais quando sucesso")
     void findByRegiao_RetornaListaEstadoSul_QuandoSucesso() {
-    when(afinidadeRepositoryMock.findByRegiao("sul").orElse(null)).thenReturn(new Afinidade("sul", "PR,SC,RS"));
+        final Afinidade afinidade = new Afinidade("sul", "PR,SC,RS");
+        when(afinidadeRepositoryMock.findByRegiao("sul")).thenReturn(Optional.of(afinidade));
         final List<String> regiao = afinidadeServiceMock.findByRegiao("sul");
 
         Assertions.assertThat(regiao)

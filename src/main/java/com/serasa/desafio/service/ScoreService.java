@@ -21,9 +21,9 @@ public class ScoreService {
 
     private final Logger log = LoggerFactory.getLogger(ScoreService.class);
 
-    public ScoreService(final ScoreRepository scoreRepository, final ModelMapper modelMapper) {
+    public ScoreService(final ScoreRepository scoreRepository) {
         this.scoreRepository = scoreRepository;
-        this.modelMapper = modelMapper;
+        this.modelMapper = new ModelMapper();
     }
 
     @Transactional

@@ -15,8 +15,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.modelmapper.ModelMapper;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -32,22 +30,15 @@ import com.serasa.desafio.util.PessoaCreator;
 class PessoaServiceTest {
 
     public static final String RECOMENDAVEL = "Recomendável";
+    private final List<String> estadosSudeste = AfinidadeCreator.getEstadosSudeste();
     @InjectMocks
     PessoaService pessoaServiceMock;
-
     @Mock
     PessoaRepository pessoaRepositoryMock;
-
     @Mock
     AfinidadeService afinidadeServiceMock;
-
     @Mock
     ScoreService scoreServiceMock;
-
-    @Mock
-    ModelMapper modelMapper;
-
-    private final List<String> estadosSudeste = AfinidadeCreator.getEstadosSudeste();
 
     @Test
     @DisplayName("Retorna um objeto PessoaDTO quando sucesso")
@@ -90,7 +81,6 @@ class PessoaServiceTest {
         when(scoreServiceMock.getDescricao(pessoa.getScore())).thenReturn(RECOMENDAVEL);
         when(afinidadeServiceMock.findByRegiao(pessoa.getRegiao())).thenReturn(estadosSudeste);
         when(pessoaRepositoryMock.findById(pessoa.getId())).thenReturn(Optional.of(pessoa));
-        when(modelMapper.map(pessoa, PessoaConsultaDTO.class)).thenReturn(PessoaCreator.createPessoaConsultaDTO());
 
         final ResponseEntity<PessoaConsultaDTO> pessoaConsultaDTOResponseEntity = pessoaServiceMock.findById(1L);
         final PessoaConsultaDTO pessoaConsultaDTO = pessoaConsultaDTOResponseEntity.getBody();
@@ -122,7 +112,6 @@ class PessoaServiceTest {
         when(afinidadeServiceMock.findByRegiao(anyString())).thenReturn(estadosSudeste);
         final List<Pessoa> listPessoa = PessoaCreator.createListPessoa();
         when(pessoaRepositoryMock.findAll()).thenReturn(listPessoa);
-
         final ResponseEntity<List<PessoaConsultaDTO>> listPessoaDTOResponseEntity = pessoaServiceMock.findAll();
 
         final List<PessoaConsultaDTO> listPessoaConsultaDTO = listPessoaDTOResponseEntity.getBody();

@@ -139,7 +139,7 @@
     <li>final – numérico</li>
     </ul>
 
-##Para Testar a Aplicação:
+## Para Testar a Aplicação:
 1. Importe no postman o Arquivo serasa_collection.json localizado em: src/main/java/resources.
 2. Execute a requisição authenticate localizada na pasta Login.
 3. Para testar as demais requisições, na aba Authorization do postman selecione Bearer token e adicione o token gerado no passo anterior.
